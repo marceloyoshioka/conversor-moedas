@@ -1,6 +1,2 @@
 # conversor-moedas
 Uma API REST desenvolvida em Spring Boot que consome dados em tempo real da AwesomeAPI para realizar conversões monetárias atualizadas para Real (BRL).
-
-## Como testar a API localmente
-- **Cotação bruta:** `http://localhost:8080/cotacao`
-- **Conversão de BRL para USD:** `http://localhost:8080/converter?valorEmReais=100`
