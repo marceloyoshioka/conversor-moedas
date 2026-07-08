@@ -1,14 +1,9 @@
 package com.pet.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pet.model.DadosCotacao;
 import com.pet.model.ResultadoConversaoDto;
-import com.pet.service.ConsumoApiService;
-import com.pet.service.ConverteDados;
 import com.pet.service.CotacaoService;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
