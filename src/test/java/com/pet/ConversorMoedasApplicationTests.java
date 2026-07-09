@@ -26,16 +26,19 @@ class ConversorMoedasApplicationTests {
 		assertNotNull(dto.valorConvertido());
 	}
 
+	
 	@Test 
 	void deveSerMaiorQue0(){
 		ResultadoConversaoDto dto =	service.converterReaisParaDolares(1D);
 		assertTrue(dto.valorConvertido() > 0);
 	}
 	
+
 	@Test
 	void deveGarantirQueCalculoMatematicoEstaCorreto() {
 		ResultadoConversaoDto dto =	service.converterReaisParaDolares(1D);
 		Double provaReal = dto.valorConvertido() * dto.taxaCambio();
 		assertEquals(1.0, provaReal, 0.01);
 	}
+
 }

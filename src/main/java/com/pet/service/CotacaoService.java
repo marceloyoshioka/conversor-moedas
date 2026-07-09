@@ -1,5 +1,8 @@
 package com.pet.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,12 +39,17 @@ public class CotacaoService {
             
            Double valorConvertidoDolar = valorEmReais / taxaBid;
            
+           BigDecimal valorConvertidoDolarTransformadoBigDecimal = BigDecimal.valueOf(valorConvertidoDolar);
+           
+           BigDecimal valorConvertidoDolarArredondado = valorConvertidoDolarTransformadoBigDecimal
+        		   .setScale(4, RoundingMode.HALF_EVEN);
+           
            return new ResultadoConversaoDto(
 	        		   valorEmReais, 
 	        		   "BRL", 
 	        		   "USD", 
 	        		   taxaBid, 
-	        		   valorConvertidoDolar
+	        		   valorConvertidoDolarArredondado.doubleValue()
         		   );
             
         } catch (Exception e) {
