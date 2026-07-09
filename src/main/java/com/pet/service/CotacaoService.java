@@ -22,34 +22,32 @@ public class CotacaoService {
     
 	private ObjectMapper mapper = new ObjectMapper();
 	
-	private static final String URL = "https://economia.awesomeapi.com.br/json/last/USD-BRL";
+	private static final String URL = "https://economia.awesomeapi.com.br/json/last/";
 	
 	public DadosCotacao obterCotacao() {
 
-		return buscarETratarDadosDaApi();
+		return buscarETratarDadosDaApi("USD","BRL");
 	}
 	
-	public ResultadoConversaoDto converterReaisParaDolares(Double valorEmReais) {
+	public ResultadoConversaoDto converterReaisParaDolares(String daMoeda, String paraMoeda, BigDecimal valor) {
 		
-		DadosCotacao dados = buscarETratarDadosDaApi();
+		DadosCotacao dados = buscarETratarDadosDaApi(daMoeda, paraMoeda);
 		
         try {
             
-           Double taxaBid = Double.parseDouble(dados.valorCompra());
-            
-           Double valorConvertidoDolar = valorEmReais / taxaBid;
+           BigDecimal taxaBid = new BigDecimal(dados.valorCompra());
+           BigDecimal valorBruto = valor.multiply(taxaBid);
            
-           BigDecimal valorConvertidoDolarTransformadoBigDecimal = BigDecimal.valueOf(valorConvertidoDolar);
+           BigDecimal valorFinalArredondado = valorBruto.setScale(4, RoundingMode.HALF_EVEN);
            
-           BigDecimal valorConvertidoDolarArredondado = valorConvertidoDolarTransformadoBigDecimal
-        		   .setScale(4, RoundingMode.HALF_EVEN);
+           BigDecimal taxaBidFormatada = taxaBid.setScale(4, RoundingMode.HALF_EVEN);
            
            return new ResultadoConversaoDto(
-	        		   valorEmReais, 
-	        		   "BRL", 
-	        		   "USD", 
-	        		   taxaBid, 
-	        		   valorConvertidoDolarArredondado.doubleValue()
+	        		   valor, 
+	        		   daMoeda, 
+	        		   paraMoeda, 
+	        		   taxaBidFormatada, 
+	        		   valorFinalArredondado
         		   );
             
         } catch (Exception e) {
@@ -58,9 +56,9 @@ public class CotacaoService {
 	
 	}
 	
-	private DadosCotacao buscarETratarDadosDaApi() {
+	private DadosCotacao buscarETratarDadosDaApi(String daMoeda, String paraMoeda) {
 		
-		String jsonPuro = consumoApi.obterDados(URL);
+		String jsonPuro = consumoApi.obterDados(URL+daMoeda+"-"+paraMoeda);
         
         try {
 			JsonNode raiz = mapper.readTree(jsonPuro);

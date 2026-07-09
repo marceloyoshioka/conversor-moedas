@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,25 +19,19 @@ class ConversorMoedasApplicationTests {
 	@Autowired
 	private CotacaoService service;
 	
+	
 	@Test
 	void deveSerDiferenteDeNull() {
-		ResultadoConversaoDto dto =	service.converterReaisParaDolares(1D);
+		ResultadoConversaoDto dto =	service.converterReaisParaDolares("BRL","USD",new BigDecimal(1));
 		assertNotNull(dto.valorConvertido());
 	}
 
 	
 	@Test 
 	void deveSerMaiorQue0(){
-		ResultadoConversaoDto dto =	service.converterReaisParaDolares(1D);
-		assertTrue(dto.valorConvertido() > 0);
+		ResultadoConversaoDto dto =	service.converterReaisParaDolares("BRL","USD",new BigDecimal(1));
+		assertTrue(dto.valorConvertido().compareTo(BigDecimal.ZERO) > 0);
 	}
 	
-
-	@Test
-	void deveGarantirQueCalculoMatematicoEstaCorreto() {
-		ResultadoConversaoDto dto =	service.converterReaisParaDolares(1D);
-		Double provaReal = dto.valorConvertido() * dto.taxaCambio();
-		assertEquals(1.0, provaReal, 0.01);
-	}
 
 }

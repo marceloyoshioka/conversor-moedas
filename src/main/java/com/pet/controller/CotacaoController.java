@@ -4,6 +4,8 @@ import com.pet.model.DadosCotacao;
 import com.pet.model.ResultadoConversaoDto;
 import com.pet.service.CotacaoService;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +27,12 @@ public class CotacaoController {
 	}
 	
 	@GetMapping("/converter")
-	public ResponseEntity<ResultadoConversaoDto> converterReaisParaDolares(@RequestParam Double valorEmReais) {
-		return ResponseEntity.ok(service.converterReaisParaDolares(valorEmReais));
+	public ResponseEntity<ResultadoConversaoDto> converterReaisParaDolares(
+			@RequestParam String daMoeda,
+			@RequestParam String paraMoeda,
+			@RequestParam BigDecimal valor
+			) {
+		return ResponseEntity.ok(service.converterReaisParaDolares(daMoeda, paraMoeda, valor));
 	}
 	
 }
