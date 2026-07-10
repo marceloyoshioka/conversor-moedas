@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pet.exception.MoedaInvalidaException;
 import com.pet.model.DadosCotacao;
 import com.pet.model.ResultadoConversaoDto;
 
@@ -58,14 +59,16 @@ public class CotacaoService {
 	
 	private DadosCotacao buscarETratarDadosDaApi(String daMoeda, String paraMoeda) {
 		
-		String jsonPuro = consumoApi.obterDados(URL+daMoeda+"-"+paraMoeda);
+		String jsonPuro = "";
         
         try {
+        	jsonPuro = consumoApi.obterDados(URL+daMoeda+"-"+paraMoeda);
 			JsonNode raiz = mapper.readTree(jsonPuro);
             JsonNode noInterno = raiz.elements().next();
             return conversor.obterDados(noInterno.toString(), DadosCotacao.class);
 		} catch (Exception e) {
-			throw new RuntimeException("Erro ao processar dados da AwesomeAPI", e);
+			throw new MoedaInvalidaException("A combinação de moedas '" + daMoeda 
+					+ "-" + paraMoeda + "' é inválida ou não é suportada.");
 		}
         
 	}

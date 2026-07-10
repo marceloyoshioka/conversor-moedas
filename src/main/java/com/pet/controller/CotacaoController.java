@@ -1,5 +1,6 @@
 package com.pet.controller;
 
+import com.pet.exception.MoedaInvalidaException;
 import com.pet.model.DadosCotacao;
 import com.pet.model.ResultadoConversaoDto;
 import com.pet.service.CotacaoService;
@@ -32,7 +33,15 @@ public class CotacaoController {
 			@RequestParam String paraMoeda,
 			@RequestParam BigDecimal valor
 			) {
+		
+		
 		return ResponseEntity.ok(service.converterReaisParaDolares(daMoeda, paraMoeda, valor));
 	}
 	
 }
+
+
+
+
+
+
